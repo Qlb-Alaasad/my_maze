@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from sys import argv, stderr, exit
 from typing import IO
-from ... import dict_validate
+from dict_validate import dict_validate
 
 
 def file_processor(file_name: str) -> dict[str, str]:
@@ -57,8 +57,15 @@ def main() -> None:
         print(f"Usage: python {argv[0]} <config_file>", file=stderr)
         exit(1)
 
+    try:
+        my_dict: dict[str, str] = file_processor(argv[1])
+
+        maze_config = dict_validate(my_dict)
+
+    except ConfigError as error:
+        print(f"Configuration Error:\n{error}", file=stderr)
+        exit(1)
     my_dict: dict[str, str] = file_processor(argv[1])
-#    print(my_dict)
     dict_validate(my_dict)
 
 
