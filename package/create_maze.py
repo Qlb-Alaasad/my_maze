@@ -12,13 +12,36 @@ class Cell():
 
 
 
-
+def Imperfect(maze, maze_config):
+    """
+    This function is used so that, in case it is not perfect, it increases the number of methods.
+    """
+    num_removals = (maze_config.width * maze_config.height) // 20
+    for i in range(num_removals):
+        y = random.randint(0, maze_config.height - 1)
+        x = random.randint(0, maze_config.width - 1)
+        direction = random.randint(0, 3)
+        if direction == 0 and y > 0: 
+            maze[y][x].north = False
+            maze[y-1][x].south = False
+        elif direction == 1 and x < maze_config.width - 1: 
+            maze[y][x].east = False
+            maze[y][x+1].west = False
+    return maze
+        
+            
 def create_maze(maze_config):
+    """
+    A function to build a maze in the form of a list inside 
+    a 2D list inside an object in four directions, and see which direction is open
+    """
+    
+    # This is regarding the issue of Mr. [Name], whether he exists or not. 
     if maze_config.seed is not None:
         random.seed(maze_config.seed)
     maze: list[list[Cell]]= []
     row: list[Cell] = []
-
+    # This is to ensure all elements are in order to clear the path later.
     for i in range(maze_config.width):
 
         for j in range(maze_config.height):
@@ -65,5 +88,9 @@ def create_maze(maze_config):
             open_maze[ny][nx] = True
             stack.append((nx, ny))         
         else:
-            stack.pop()        
+            stack.pop()
+        if not maze_config.perfect:
+            maze = Imperfect(maze, maze_config)  
     return maze
+
+
