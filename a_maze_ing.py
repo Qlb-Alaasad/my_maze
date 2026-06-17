@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 from sys import argv, stderr, exit
 # from typing import IO
-from dict_validate import dict_validate, ConfigError
-from create_maze import create_maze
 
 
 def file_processor(file_name: str) -> dict[str, str]:
@@ -59,14 +57,22 @@ def main() -> None:
         exit(1)
 
     try:
-        my_dict: dict[str, str] = file_processor(argv[1])
+        try:
+            from package import (
+                    dict_validate, ConfigError,  create_maze, drawing_a_maze
+                    )
+            my_dict: dict[str, str] = file_processor(argv[1])
 
-        maze_config = dict_validate(my_dict)
-        # this the file i wont from aabtah to make i just write if for flake8
-        create_maze(maze_config)
+            maze_config = dict_validate(my_dict)
 
-    except ConfigError as error:
-        print(f"Configuration Error:\n{error}", file=stderr)
+            drawing_a_maze(create_maze(maze_config), maze_config)
+
+        except ConfigError as error:
+            print(f"Configuration Error:\n{error}", file=stderr)
+            exit(1)
+
+    except Exception as error:
+        print(f"Unexpected validation error: {error}", file=stderr)
         exit(1)
 
 
