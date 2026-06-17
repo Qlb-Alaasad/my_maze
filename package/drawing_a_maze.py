@@ -1,5 +1,3 @@
-
-
 def drawing_a_maze(maze, maze_config):
 
     for i in range(maze_config.height):
@@ -24,7 +22,7 @@ def drawing_a_maze(maze, maze_config):
             else:
                 print(" ",end="")
         print()
-            
+
     print("+", end="")
     for i in range(maze_config.width):
         if maze[maze_config.height-1][i].south:
@@ -32,5 +30,4 @@ def drawing_a_maze(maze, maze_config):
         else:
             print("   ", end="")
         print("+", end="")
-    print()
-    
+    print() 
