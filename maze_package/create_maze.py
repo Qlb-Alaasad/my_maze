@@ -1,12 +1,25 @@
 import random
+from .make42_pattern import make_42_pattern
 
 
 class Cell():
-    def __init__(self, north=True, south=True, east=True, west=True):
-        self.north = north # up with value 1
-        self.south = south # done with value 2
-        self.east = east # rite
-        self.west = west # left
+    def __init__(
+            self,
+            north: bool=True,
+            south: bool=True,
+            east: bool=True,
+            west: bool=True
+            ) -> None:
+        """
+        This init function for Cell that will use
+        to make our maze
+
+        made by aabtah
+        """
+        self.north = north  # up with value 1
+        self.south = south  # done with value 2
+        self.east = east  # rite
+        self.west = west  # left
 
 
 def Imperfect(maze, maze_config):
@@ -21,10 +34,10 @@ def Imperfect(maze, maze_config):
         y = random.randint(0, maze_config.height - 1)
         x = random.randint(0, maze_config.width - 1)
         direction = random.randint(0, 3)
-        if direction == 0 and y > 0: 
+        if direction == 0 and y > 0:
             maze[y][x].north = False
             maze[y-1][x].south = False
-        elif direction == 1 and x < maze_config.width - 1: 
+        elif direction == 1 and x < maze_config.width - 1:
             maze[y][x].east = False
             maze[y][x+1].west = False
     return maze
@@ -32,7 +45,7 @@ def Imperfect(maze, maze_config):
 
 def create_maze(maze_config):
     """
-    A function to build a maze in the form of a list inside 
+    A function to build a maze in the form of a list inside
     a 2D list inside an object in four directions,
     and see which direction is open
 
@@ -44,7 +57,7 @@ def create_maze(maze_config):
         random.seed(maze_config.seed)
 
     # start hear
-    maze: list[list[Cell]]= []
+    maze: list[list[Cell]] = []
     row: list[Cell] = []
 
     # This is to ensure all elements are in order to clear the path later.
@@ -53,12 +66,10 @@ def create_maze(maze_config):
             row.append(Cell())
         maze.append(row)
         row = []
-    entry_x, entry_y = maze_config.entry
-    need_open = []
-    need_open = [[False] * maze_config.width for _ in range(maze_config.height)]
 
-#    need_open = make_42_pattern(maze_config)
-    need_open[entry_y][entry_x] = True # start up
+    entry_x, entry_y = maze_config.entry
+    need_open = make_42_pattern(maze_config)
+    need_open[entry_y][entry_x] = True  # start up
 
     stack = [(entry_x, entry_y)]
 
@@ -93,9 +104,9 @@ def create_maze(maze_config):
                 maze[y][x].west = False
                 maze[new_y][new_x].east = False
             need_open[new_y][new_x] = True
-            stack.append((new_x, new_y))         
+            stack.append((new_x, new_y))
         else:
             stack.pop()
         if not maze_config.perfect:
-            maze = Imperfect(maze, maze_config)  
+            maze = Imperfect(maze, maze_config)
     return maze

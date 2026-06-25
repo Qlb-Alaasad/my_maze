@@ -58,7 +58,7 @@ def main() -> None:
 
     try:
         try:
-            from package import (
+            from maze_package import (
                     dict_validate, ConfigError,  create_maze, drawing_a_maze
                     )
             my_dict: dict[str, str] = file_processor(argv[1])

@@ -42,7 +42,7 @@ class MazeConfig(BaseModel):
                 return (int(parts[0].strip()), int(parts[1].strip()))
             except ValueError:
                 raise ValueError("coordinates must contain valid integers!!")
-        return value
+        raise TypeError(f"Except a str value ({value})")
 
     @field_validator('output_file', mode='after')
     @classmethod
