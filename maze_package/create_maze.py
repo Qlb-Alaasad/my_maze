@@ -29,7 +29,7 @@ def Imperfect(maze, maze_config):
 
     made by aabtah
     """
-    num_removals = (maze_config.width * maze_config.height) // 20
+    num_removals = (maze_config.width * maze_config.height) // 80
     for i in range(num_removals):
         y = random.randint(0, maze_config.height - 1)
         x = random.randint(0, maze_config.width - 1)
