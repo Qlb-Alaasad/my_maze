@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 from sys import argv, stderr, exit
-# from typing import IO
-import random
 
 
 def file_processor(file_name: str) -> dict[str, str]:
@@ -34,9 +32,9 @@ def file_processor(file_name: str) -> dict[str, str]:
             return result
         else:
             raise Exception(
-                    f"the arg in {file_name} is less than the Requirement!!"
-                    "\n please check your file and try again"
-                    )
+                f"the arg in {file_name} is less than the Requirement!!"
+                "\n please check your file and try again"
+            )
 
     except Exception as error:
         print(error, file=stderr)
@@ -52,6 +50,7 @@ def main() -> None:
     this function make check that you run the code with the correct
     way then start calling the other function
     """
+
     if len(argv) != 2:
         print("Error: expect 1 valid file exist", file=stderr)
         print(f"Usage: python {argv[0]} <config_file>", file=stderr)
@@ -60,43 +59,42 @@ def main() -> None:
     try:
         try:
             from maze_package import (
-                    dict_validate, ConfigError,  create_maze, drawing_a_maze
-                    )
-            # هذا عشان موضوع الالوان في الكود بتقدر تضيف الالوان الي بدك إياها
+                dict_validate, ConfigError, create_maze, drawing_a_maze
+            )
+            # الالوان
             colors = [
-        '\033[92m', # هذا اخضر 
-        '\033[94m', # ازرق 
-        '\033[93m', # اصفر 
-        '\033[95m', # زهري لون البنات عشان لو بنت عملت ريفيو 
-        ]
+                '\033[92m',  # اخضر
+                '\033[94m',  # ازرق
+                '\033[93m',  # اصفر
+                '\033[95m',  # زهري
+            ]
             my_dict: dict[str, str] = file_processor(argv[1])
 
             maze_config = dict_validate(my_dict)
             x = 0
-            drawing_a_maze(create_maze(maze_config), maze_config, colors[x])
+            maze = create_maze(maze_config)
+            drawing_a_maze(maze, maze_config, colors[x])
 
-            
             while True:
-                input_variable = int(input("""
-A-Maze-ing
-1. Re-generate a new maze
-2. Show/Hide path from entry to exit
-3. Rotate maze colors
-4. Quit
-Choice? (1-4):"""))
+                input_variable = int(input(
+                    "\nA-Maze-ing\n1. Re-generate a new maze\n"
+                    "2. Show/Hide path from entry to exit\n"
+                    "3. Rotate maze colors\n4. Quit\nChoice? (1-4):"
+                ))
+
                 if input_variable == 1:
-                    my_dict: dict[str, str] = file_processor(argv[1])
+                    my_dict = file_processor(argv[1])
                     maze_config = dict_validate(my_dict)
-                    drawing_a_maze(create_maze(maze_config), maze_config,colors[x])
+                    maze = create_maze(maze_config)
+                    drawing_a_maze(maze, maze_config, colors[x])
                 elif input_variable == 2:
                     pass
                 elif input_variable == 3:
-                    if x == len(colors) - 1:
+                    if x >= len(colors) - 1:
                         x = 0
-                    x += 1
-                    drawing_a_maze(create_maze(maze_config), maze_config,colors[x])
-
-
+                    else:
+                        x += 1
+                    drawing_a_maze(maze, maze_config, colors[x])
                 elif input_variable == 4:
                     exit(0)
                 else:
@@ -107,12 +105,11 @@ Choice? (1-4):"""))
             exit(1)
 
     except KeyboardInterrupt:
-        print("\nAn unauthorized character has been pressed on the keyboard.")
-        exi
+        print("\nAn unauthorized character has been pressed.")
+        exit(1)
     except Exception as error:
         print(f"Unexpected validation error: {error}", file=stderr)
-        exit(1)
 
- 
+
 if __name__ == "__main__":
     main()

@@ -1,15 +1,16 @@
 import random
 from .make42_pattern import make_42_pattern
+from .dict_validate import MazeConfig
 
 
 class Cell():
     def __init__(
-            self,
-            north: bool=True,
-            south: bool=True,
-            east: bool=True,
-            west: bool=True
-            ) -> None:
+        self,
+        north: bool = True,
+        south: bool = True,
+        east: bool = True,
+        west: bool = True
+    ) -> None:
         """
         This init function for Cell that will use
         to make our maze
@@ -22,7 +23,8 @@ class Cell():
         self.west = west  # left
 
 
-def Imperfect(maze, maze_config):
+def Imperfect(maze: list[list[Cell]],
+              maze_config: MazeConfig) -> list[list[Cell]]:
     """
     This function is used so that, in case it is not perfect
     it increases the number of methods.
@@ -43,7 +45,7 @@ def Imperfect(maze, maze_config):
     return maze
 
 
-def create_maze(maze_config):
+def create_maze(maze_config: MazeConfig) -> list[list[Cell]]:
     """
     A function to build a maze in the form of a list inside
     a 2D list inside an object in four directions,
@@ -58,14 +60,13 @@ def create_maze(maze_config):
 
     # start hear
     maze: list[list[Cell]] = []
-    row: list[Cell] = []
 
     # This is to ensure all elements are in order to clear the path later.
-    for i in range(maze_config.width):
-        for j in range(maze_config.height):
+    for i in range(maze_config.height):
+        row: list[Cell] = []
+        for j in range(maze_config.width):
             row.append(Cell())
         maze.append(row)
-        row = []
 
     entry_x, entry_y = maze_config.entry
     need_open = make_42_pattern(maze_config)
