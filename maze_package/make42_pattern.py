@@ -26,7 +26,7 @@ def make_42_pattern(maze_config: MazeConfig) -> list[list[bool]]:
                 )
         return need_open
 
-    elif maze_config.width > 29 or maze_config.height > 29:
+    elif maze_config.width > 29 and maze_config.height > 29:
         block_size = 3
     else:
         block_size = 1

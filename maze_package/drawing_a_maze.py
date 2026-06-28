@@ -10,8 +10,10 @@ class Colors:
     original: str = '\033[0m'
 
 
-def drawing_a_maze(maze: list[list[any]], maze_config: MazeConfig,
-                   color: str = '\033[47m') -> None:
+def drawing_a_maze(
+        maze: list[list[any]], maze_config: MazeConfig,
+        pattern_42: list[list[bool]], color: str = '\033[47m'
+        ) -> None:
 
     """
     هذه دالة الرسم المدمجة: تجمع طريقة عبد بالبلوكات الملونة

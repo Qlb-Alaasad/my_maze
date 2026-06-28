@@ -72,8 +72,8 @@ def main() -> None:
 
             maze_config = dict_validate(my_dict)
             x = 0
-            maze = create_maze(maze_config)
-            drawing_a_maze(maze, maze_config, colors[x])
+            maze, pattern_42 = create_maze(maze_config)
+            drawing_a_maze(maze, maze_config, pattern_42, colors[x])
 
             while True:
                 input_variable = int(input(
@@ -85,8 +85,8 @@ def main() -> None:
                 if input_variable == 1:
                     my_dict = file_processor(argv[1])
                     maze_config = dict_validate(my_dict)
-                    maze = create_maze(maze_config)
-                    drawing_a_maze(maze, maze_config, colors[x])
+                    maze, pattern_42= create_maze(maze_config)
+                    drawing_a_maze(maze, maze_config, pattern_42, colors[x])
                 elif input_variable == 2:
                     pass
                 elif input_variable == 3:
@@ -94,7 +94,7 @@ def main() -> None:
                         x = 0
                     else:
                         x += 1
-                    drawing_a_maze(maze, maze_config, colors[x])
+                    drawing_a_maze(maze, maze_config, pattern_42, colors[x])
                 elif input_variable == 4:
                     exit(0)
                 else:

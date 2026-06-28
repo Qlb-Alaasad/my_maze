@@ -42,10 +42,19 @@ def Imperfect(maze: list[list[Cell]],
         elif direction == 1 and x < maze_config.width - 1:
             maze[y][x].east = False
             maze[y][x+1].west = False
+        elif direction == 2 and y < maze_config.height - 1:
+            maze[y][x].south = False
+            maze[y+1][x].north = False
+        elif direction == 3 and x > 0:
+            maze[y][x].west = False
+            maze[y][x-1].east = False
     return maze
 
 
-def create_maze(maze_config: MazeConfig) -> list[list[Cell]]:
+def create_maze(maze_config: MazeConfig) -> tuple[
+        list[list[Cell]],
+        list[list[bool]]
+        ]:
     """
     A function to build a maze in the form of a list inside
     a 2D list inside an object in four directions,
@@ -69,7 +78,8 @@ def create_maze(maze_config: MazeConfig) -> list[list[Cell]]:
         maze.append(row)
 
     entry_x, entry_y = maze_config.entry
-    need_open = make_42_pattern(maze_config)
+    pattern_42 = make_42_pattern(maze_config)
+    need_open = pattern_42
     need_open[entry_y][entry_x] = True  # start up
 
     stack = [(entry_x, entry_y)]
@@ -108,6 +118,7 @@ def create_maze(maze_config: MazeConfig) -> list[list[Cell]]:
             stack.append((new_x, new_y))
         else:
             stack.pop()
-        if not maze_config.perfect:
-            maze = Imperfect(maze, maze_config)
-    return maze
+
+    if not maze_config.perfect:
+        maze = Imperfect(maze, maze_config)
+    return maze, pattern_42
