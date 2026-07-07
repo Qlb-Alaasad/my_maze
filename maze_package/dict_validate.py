@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
-from pydantic import (
+from sys import stderr
+try:
+    from pydantic import (
         BaseModel, Field, field_validator, model_validator, ValidationError
         )
+except Exception as error:
+    print(error, file=stderr)
+    exit(1)
+
 from typing import Any, Optional
 
 

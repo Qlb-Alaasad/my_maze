@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 from sys import argv, stderr, exit
+from importlib.util import find_spec
+
+
+if find_spec("pydantic") is not None:
+    ...
+else:
+    print("you did not install the pydintic yet", file=stderr)
+    exit(1)
 
 
 def file_processor(file_name: str) -> dict[str, str]:
@@ -57,52 +65,51 @@ def main() -> None:
         exit(1)
 
     try:
-        try:
-            from maze_package import (
-                dict_validate, ConfigError, create_maze, drawing_a_maze
-            )
-            # الالوان
-            colors = [
-                '\033[92m',  # اخضر
-                '\033[94m',  # ازرق
-                '\033[93m',  # اصفر
-                '\033[95m',  # زهري
-            ]
-            my_dict: dict[str, str] = file_processor(argv[1])
+        from maze_package import (
+            dict_validate, ConfigError, create_maze, drawing_a_maze
+        )
+        # الالوان
+        colors = [
+            '\033[92m',  # اخضر
+            '\033[94m',  # ازرق
+            '\033[93m',  # اصفر
+            '\033[95m',  # زهري
+        ]
+        my_dict: dict[str, str] = file_processor(argv[1])
 
-            maze_config = dict_validate(my_dict)
-            x = 0
-            maze, pattern_42 = create_maze(maze_config)
-            drawing_a_maze(maze, maze_config, pattern_42, colors[x])
+        maze_config = dict_validate(my_dict)
+        x = 0
+        maze, pattern_42 = create_maze(maze_config)
+        drawing_a_maze(maze, maze_config, pattern_42, colors[x])
 
-            while True:
-                input_variable = int(input(
-                    "\nA-Maze-ing\n1. Re-generate a new maze\n"
-                    "2. Show/Hide path from entry to exit\n"
-                    "3. Rotate maze colors\n4. Quit\nChoice? (1-4):"
-                ))
+        while True:
+            input_variable = int(input(
+                "\nA-Maze-ing\n1. Re-generate a new maze\n"
+                "2. Show/Hide path from entry to exit\n"
+                "3. Rotate maze colors\n4. Quit\nChoice? (1-4):"
+            ))
 
-                if input_variable == 1:
-                    my_dict = file_processor(argv[1])
-                    maze_config = dict_validate(my_dict)
-                    maze, pattern_42= create_maze(maze_config)
-                    drawing_a_maze(maze, maze_config, pattern_42, colors[x])
-                elif input_variable == 2:
-                    pass
-                elif input_variable == 3:
-                    if x >= len(colors) - 1:
-                        x = 0
-                    else:
-                        x += 1
-                    drawing_a_maze(maze, maze_config, pattern_42, colors[x])
-                elif input_variable == 4:
-                    exit(0)
+            if input_variable == 1:
+                my_dict = file_processor(argv[1])
+                maze_config = dict_validate(my_dict)
+                maze, pattern_42 = create_maze(maze_config)
+                drawing_a_maze(maze, maze_config, pattern_42, colors[x])
+            elif input_variable == 2:
+                pass
+            elif input_variable == 3:
+                if x >= len(colors) - 1:
+                    x = 0
                 else:
-                    print("Invalid choice, please enter 1-4.")
+                    x += 1
+                drawing_a_maze(maze, maze_config, pattern_42, colors[x])
+            elif input_variable == 4:
+                exit(0)
+            else:
+                print("Invalid choice, please enter 1-4.")
 
-        except ConfigError as error:
-            print(f"Configuration Error:\n{error}", file=stderr)
-            exit(1)
+    except ConfigError as error:
+        print(f"Configuration Error:\n{error}", file=stderr)
+        exit(1)
 
     except KeyboardInterrupt:
         print("\nAn unauthorized character has been pressed.")
