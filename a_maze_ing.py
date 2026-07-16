@@ -66,8 +66,10 @@ def main() -> None:
 
     try:
         from maze_package import (
-            dict_validate, ConfigError, create_maze, drawing_a_maze
+            dict_validate, ConfigError, create_maze,
+            drawing_a_maze, solve_maze
         )
+
         # الالوان
         colors = [
             '\033[92m',  # اخضر
@@ -78,9 +80,16 @@ def main() -> None:
         my_dict: dict[str, str] = file_processor(argv[1])
 
         maze_config = dict_validate(my_dict)
-        x = 0
+        x = 0  # What x meen??? plz replase it
         maze, pattern_42 = create_maze(maze_config)
-        drawing_a_maze(maze, maze_config, pattern_42, colors[x])
+
+        solution_path = solve_maze(maze, maze_config)
+        show_path = False
+
+        drawing_a_maze(
+                maze, maze_config, pattern_42, colors[x],
+                show_path, solution_path
+                )
 
         while True:
             input_variable = int(input(
@@ -95,7 +104,11 @@ def main() -> None:
                 maze, pattern_42 = create_maze(maze_config)
                 drawing_a_maze(maze, maze_config, pattern_42, colors[x])
             elif input_variable == 2:
-                pass
+                show_path = not show_path
+                drawing_a_maze(
+                        maze, maze_config, pattern_42, colors[x],
+                        show_path, solution_path
+                        )
             elif input_variable == 3:
                 if x >= len(colors) - 1:
                     x = 0
