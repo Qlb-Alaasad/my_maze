@@ -63,21 +63,35 @@ def get_neighbors(
     Made by mabu-are
     """
     neighbors: list[tuple[int, int]] = []
-
-    # 1. North neighbor: check if we can go up
-    if y > 0 and not maze[y][x].north:
+    # 1. North neighbor: check current cell's North AND neighbor's South
+    if (
+        y > 0
+        and not maze[y][x].north
+        and not maze[y - 1][x].south
+    ):
         neighbors.append((x, y - 1))
 
-    # 2. South neighbor: check if we can go down
-    if y < maze_config.height - 1 and not maze[y][x].south:
+    # 2. South neighbor: check current cell's South AND neighbor's North
+    if (
+        y < maze_config.height - 1
+        and not maze[y][x].south
+        and not maze[y + 1][x].north
+    ):
         neighbors.append((x, y + 1))
 
-    # 3. East neighbor: check if we can go right
-    if x < maze_config.width - 1 and not maze[y][x].east:
+    # 3. East neighbor: check current cell's East AND neighbor's West
+    if (
+        x < maze_config.width - 1
+        and not maze[y][x].east
+        and not maze[y][x + 1].west
+    ):
         neighbors.append((x + 1, y))
 
-    # 4. West neighbor: check if we can go left
-    if x > 0 and not maze[y][x].west:
+    # 4. West neighbor: check current cell's West AND neighbor's East
+    if (
+        x > 0
+        and not maze[y][x].west
+        and not maze[y][x - 1].east
+    ):
         neighbors.append((x - 1, y))
-
     return neighbors
