@@ -67,7 +67,7 @@ def main() -> None:
     try:
         from maze_package import (
             dict_validate, ConfigError, create_maze,
-            drawing_a_maze, solve_maze,output_file
+            drawing_a_maze, solve_maze, output_file,
         )
 
         # الالوان
@@ -103,7 +103,8 @@ def main() -> None:
                 maze, pattern_42 = create_maze(maze_config)
                 solution_path = solve_maze(maze, maze_config)
                 show_path = False
-                drawing_a_maze(maze, maze_config, pattern_42, colors[change_colors])
+                drawing_a_maze(maze, maze_config,
+                               pattern_42, colors[change_colors])
                 output_file(maze_config, maze)
             elif input_variable == 2:
                 show_path = not show_path
@@ -116,7 +117,6 @@ def main() -> None:
                     change_colors = 0
                 else:
                     change_colors += 1
-                # هنا التغيير: إعادة الرسم بنفس الحالة الحالية للمسار
                 path_to_draw = solution_path if show_path else None
                 drawing_a_maze(
                     maze, maze_config, pattern_42, colors[change_colors],

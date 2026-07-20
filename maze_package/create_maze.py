@@ -19,17 +19,15 @@ class Cell():
         """
         self.north = north  # up with value 1
         self.south = south  # done with value 2
-        self.east = east  # rite
-        self.west = west  # left
+        self.east = east    # rite
+        self.west = west    # left
 
 
-def Imperfect(maze: list[list[Cell]], maze_config: MazeConfig) -> list[list[Cell]]:
-    """
-    تعديل المتاهة لتصبح غير كاملة (Imperfect) عن طريق إزالة بعض الجدران الداخلية
-    مع ضمان عدم المساس بالحدود الخارجية للمتاهة.
-    """
+def Imperfect(maze: list[list[Cell]],
+              maze_config: MazeConfig) -> list[list[Cell]]:
+
     num_removals = (maze_config.width * maze_config.height) // 80
-    
+
     for _ in range(num_removals):
         removed = False
         attempts = 0
@@ -37,33 +35,31 @@ def Imperfect(maze: list[list[Cell]], maze_config: MazeConfig) -> list[list[Cell
             y = random.randint(0, maze_config.height - 1)
             x = random.randint(0, maze_config.width - 1)
             direction = random.randint(0, 3)
-            
-            if direction == 0 and y > 0: # North
+
+            if direction == 0 and y > 0:  # North
                 maze[y][x].north = False
-                maze[y-1][x].south = False
+                maze[y - 1][x].south = False
                 removed = True
-            elif direction == 1 and x < maze_config.width - 1: # East
+            elif direction == 1 and x < maze_config.width - 1:  # East
                 maze[y][x].east = False
-                maze[y][x+1].west = False
+                maze[y][x + 1].west = False
                 removed = True
-            elif direction == 2 and y < maze_config.height - 1: # South
+            elif direction == 2 and y < maze_config.height - 1:  # South
                 maze[y][x].south = False
-                maze[y+1][x].north = False
+                maze[y + 1][x].north = False
                 removed = True
-            elif direction == 3 and x > 0: # West
+            elif direction == 3 and x > 0:  # West
                 maze[y][x].west = False
-                maze[y][x-1].east = False
+                maze[y][x - 1].east = False
                 removed = True
-            
             attempts += 1
-                
     return maze
 
 
 def create_maze(maze_config: MazeConfig) -> tuple[
-        list[list[Cell]],
-        list[list[bool]]
-        ]:
+    list[list[Cell]],
+    list[list[bool]]
+]:
     """
     A function to build a maze in the form of a list inside
     a 2D list inside an object in four directions,
