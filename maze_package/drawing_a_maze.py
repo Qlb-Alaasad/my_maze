@@ -1,3 +1,4 @@
+from typing import Optional
 from .dict_validate import MazeConfig
 from .create_maze import Cell
 
@@ -17,23 +18,24 @@ def drawing_a_maze(
     pattern_42: list[list[bool]],
     color: str = '\033[47m',
     show_path: bool = False,
-    solution_path: list[tuple[int, int]] = None
+    solution_path: Optional[list[tuple[int, int]]] = None
 ) -> None:
     """
     Function to draw the maze structure with pathfinding visualization.
 
     Developed by aabtah.
     """
-    if solution_path is None:
-        solution_path = []
-
+    # Initialize solution_path as a list if it is None
+    current_path: list[tuple[int, int]] = (
+        solution_path if solution_path is not None else []
+    )
     if '92' in color:
-        path_color = Colors.magenta
+        path_color: str = Colors.magenta
     else:
         path_color = Colors.green
 
-    path_set = set(solution_path) if show_path else set()
-    x = f"{color}██{Colors.original}"
+    path_set: set[tuple[int, int]] = set(current_path) if show_path else set()
+    x: str = f"{color}██{Colors.original}"
 
     for _ in range(maze_config.width * 2 + 1):
         print(x, end="")

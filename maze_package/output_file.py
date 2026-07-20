@@ -1,28 +1,30 @@
 from .solve_maze import solve_maze
+from .dict_validate import MazeConfig
+from .create_maze import Cell
 
 
-def output_file(maze_config: dict[str, str], maze: list[list]):
+def output_file(maze_config: MazeConfig, maze: list[list[Cell]]) -> None:
     """
     Export the generated maze structure and its solution path to a file.
 
     Parameters:
-    maze_config: Configuration dictionary containing entry/exit coordinates.
+    maze_config: Configuration object containing entry/exit coordinates.
     maze: 2D list of Cell objects representing the maze layout.
 
     Developed by aabtah.
     """
     with open("maze.txt", "w") as f:
         # Convert Cell directions to hexadecimal representation
-        for i in maze:
-            for j in i:
+        for row in maze:
+            for cell in row:
                 x = 0
-                if j.north:
+                if cell.north:
                     x += 1
-                if j.east:
+                if cell.east:
                     x += 2
-                if j.south:
+                if cell.south:
                     x += 4
-                if j.west:
+                if cell.west:
                     x += 8
                 f.write(f"{x:X}")
             f.write("\n")
@@ -32,7 +34,7 @@ def output_file(maze_config: dict[str, str], maze: list[list]):
         f.write(f"{maze_config.exit[0]},{maze_config.exit[1]}\n")
 
         # Solve the maze and record the path directions
-        solution = solve_maze(maze, maze_config)
+        solution: list[tuple[int, int]] = solve_maze(maze, maze_config)
         for i in range(len(solution) - 1):
             x, y = solution[i]
             x_new, y_new = solution[i + 1]
