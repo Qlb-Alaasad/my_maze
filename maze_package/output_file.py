@@ -1,5 +1,5 @@
-
 from .solve_maze import solve_maze
+
 
 def output_file(maze_config: dict[str, str], maze: list[list]):
     with open("maze.txt", "w") as f:
@@ -16,11 +16,10 @@ def output_file(maze_config: dict[str, str], maze: list[list]):
                     x += 8
                 f.write(f"{x:X}")
             f.write(f"\n")
-        
+
         f.write(f"\n{maze_config.entry[0]},{maze_config.entry[1]}\n")
         f.write(f"{maze_config.exit[0]},{maze_config.exit[1]}\n")
         solution = solve_maze(maze, maze_config)
-        # هاي عشان اقصر طريق من اليست الي اعطيني إياها والباقي ما بده تعليق لانه اتوقع انه واضح 
         for i in range(len(solution) - 1):
             x, y = solution[i]
             x_new, y_new = solution[i + 1]
@@ -32,4 +31,3 @@ def output_file(maze_config: dict[str, str], maze: list[list]):
                 f.write("E")
             elif x_new == x - 1 and y_new == y:
                 f.write("W")
-            

@@ -39,7 +39,7 @@ def drawing_a_maze(
 
     pattern_42 = make_42_pattern(maze_config)
     x = f"{color}██{Colors.original}"
-    
+
     # 1. رسم الجدار العلوي للمتاهة
     for _ in range(maze_config.width * 2 + 1):
         print(x, end="")
@@ -49,7 +49,7 @@ def drawing_a_maze(
     for i in range(maze_config.height):
         # الجدار الأيسر
         print(x, end="")
-        
+
         for j in range(maze_config.width):
             # طباعة ما بداخل الخلية
             if (j, i) == maze_config.entry:

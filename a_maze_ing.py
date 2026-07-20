@@ -67,15 +67,14 @@ def main() -> None:
     try:
         from maze_package import (
             dict_validate, ConfigError, create_maze,
-            drawing_a_maze, solve_maze,output_file
+            drawing_a_maze, solve_maze, output_file
         )
 
-        # الالوان
         colors = [
-            '\033[92m',  # اخضر
-            '\033[94m',  # ازرق
-            '\033[93m',  # اصفر
-            '\033[95m',  # زهري
+            '\033[92m',  # green
+            '\033[94m',  # blue
+            '\033[93m',  # yellow
+            '\033[95m',  # pink
         ]
         my_dict: dict[str, str] = file_processor(argv[1])
 
@@ -103,7 +102,9 @@ def main() -> None:
                 maze, pattern_42 = create_maze(maze_config)
                 solution_path = solve_maze(maze, maze_config)
                 show_path = False
-                drawing_a_maze(maze, maze_config, pattern_42, colors[change_colors])
+                drawing_a_maze(
+                        maze, maze_config, pattern_42, colors[change_colors]
+                        )
                 output_file(maze_config, maze)
             elif input_variable == 2:
                 show_path = not show_path
