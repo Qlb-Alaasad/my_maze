@@ -67,7 +67,7 @@ def main() -> None:
     try:
         from maze_package import (
             dict_validate, ConfigError, create_maze,
-            drawing_a_maze, solve_maze
+            drawing_a_maze, solve_maze,output_file
         )
 
         # الالوان
@@ -80,16 +80,15 @@ def main() -> None:
         my_dict: dict[str, str] = file_processor(argv[1])
 
         maze_config = dict_validate(my_dict)
-        x = 0  # What x meen??? plz replase it
+        change_colors = 0  # Absher Hai changed the name
         maze, pattern_42 = create_maze(maze_config)
-
         solution_path = solve_maze(maze, maze_config)
         show_path = False
-
         drawing_a_maze(
-                maze, maze_config, pattern_42, colors[x],
+                maze, maze_config, pattern_42, colors[change_colors],
                 show_path, solution_path
                 )
+        output_file(maze_config, maze)
 
         while True:
             input_variable = int(input(
@@ -102,19 +101,27 @@ def main() -> None:
                 my_dict = file_processor(argv[1])
                 maze_config = dict_validate(my_dict)
                 maze, pattern_42 = create_maze(maze_config)
-                drawing_a_maze(maze, maze_config, pattern_42, colors[x])
+                solution_path = solve_maze(maze, maze_config)
+                show_path = False
+                drawing_a_maze(maze, maze_config, pattern_42, colors[change_colors])
+                output_file(maze_config, maze)
             elif input_variable == 2:
                 show_path = not show_path
                 drawing_a_maze(
-                        maze, maze_config, pattern_42, colors[x],
+                        maze, maze_config, pattern_42, colors[change_colors],
                         show_path, solution_path
                         )
             elif input_variable == 3:
-                if x >= len(colors) - 1:
-                    x = 0
+                if change_colors >= len(colors) - 1:
+                    change_colors = 0
                 else:
-                    x += 1
-                drawing_a_maze(maze, maze_config, pattern_42, colors[x])
+                    change_colors += 1
+                # هنا التغيير: إعادة الرسم بنفس الحالة الحالية للمسار
+                path_to_draw = solution_path if show_path else None
+                drawing_a_maze(
+                    maze, maze_config, pattern_42, colors[change_colors],
+                    show_path, path_to_draw
+                )
             elif input_variable == 4:
                 exit(0)
             else:

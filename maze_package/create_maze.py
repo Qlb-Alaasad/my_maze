@@ -23,31 +23,40 @@ class Cell():
         self.west = west  # left
 
 
-def Imperfect(maze: list[list[Cell]],
-              maze_config: MazeConfig) -> list[list[Cell]]:
+def Imperfect(maze: list[list[Cell]], maze_config: MazeConfig) -> list[list[Cell]]:
     """
-    This function is used so that, in case it is not perfect
-    it increases the number of methods.
-
-    made by aabtah
+    تعديل المتاهة لتصبح غير كاملة (Imperfect) عن طريق إزالة بعض الجدران الداخلية
+    مع ضمان عدم المساس بالحدود الخارجية للمتاهة.
     """
     num_removals = (maze_config.width * maze_config.height) // 80
-    for i in range(num_removals):
-        y = random.randint(0, maze_config.height - 1)
-        x = random.randint(0, maze_config.width - 1)
-        direction = random.randint(0, 3)
-        if direction == 0 and y > 0:
-            maze[y][x].north = False
-            maze[y-1][x].south = False
-        elif direction == 1 and x < maze_config.width - 1:
-            maze[y][x].east = False
-            maze[y][x+1].west = False
-        elif direction == 2 and y < maze_config.height - 1:
-            maze[y][x].south = False
-            maze[y+1][x].north = False
-        elif direction == 3 and x > 0:
-            maze[y][x].west = False
-            maze[y][x-1].east = False
+    
+    for _ in range(num_removals):
+        removed = False
+        attempts = 0
+        while not removed and attempts < 100:
+            y = random.randint(0, maze_config.height - 1)
+            x = random.randint(0, maze_config.width - 1)
+            direction = random.randint(0, 3)
+            
+            if direction == 0 and y > 0: # North
+                maze[y][x].north = False
+                maze[y-1][x].south = False
+                removed = True
+            elif direction == 1 and x < maze_config.width - 1: # East
+                maze[y][x].east = False
+                maze[y][x+1].west = False
+                removed = True
+            elif direction == 2 and y < maze_config.height - 1: # South
+                maze[y][x].south = False
+                maze[y+1][x].north = False
+                removed = True
+            elif direction == 3 and x > 0: # West
+                maze[y][x].west = False
+                maze[y][x-1].east = False
+                removed = True
+            
+            attempts += 1
+                
     return maze
 
 

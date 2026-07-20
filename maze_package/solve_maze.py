@@ -12,6 +12,7 @@ def solve_maze(
 
     Made by mabu-are
     """
+
     start: tuple[int, int] = maze_config.entry
     end: tuple[int, int] = maze_config.exit
 
