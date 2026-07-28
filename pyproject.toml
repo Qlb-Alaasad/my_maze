@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "my_maze"
+version = "1.0.0"
+description = "A project to learn randomness and build a random maze, then find the shortest path between the two points"
+authors = [
+    "aabtah <abd-alghani.abtah@learner.42.tech>",
+    "mabu-are <mohammad.abu-aresh@learner.42.tech>"
+]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "maze_package" }]
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+pydantic = "^2.0"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.0"
+mypy = "^1.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"
