@@ -15,8 +15,8 @@ python = ">=3.10"
 pydantic = "^2.0"
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^6.0"
-mypy = "^1.0"
+flake8 = "^7.3.0"
+mypy = "^2.1.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0"]

@@ -101,6 +101,7 @@ def main() -> None:
                 my_dict = file_processor(argv[1])
                 maze_config = dict_validate(my_dict)
                 maze, pattern_42 = create_maze(maze_config)
+                print(pattern_42)
                 solution_path = solve_maze(maze, maze_config)
                 show_path = False
                 drawing_a_maze(maze, maze_config,
