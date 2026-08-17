@@ -2,6 +2,8 @@
 from sys import argv, stderr, exit
 from importlib.util import find_spec
 
+from maze_package.drawing_a_maze import Colors
+
 
 if find_spec("pydantic") is not None:
     ...
@@ -68,24 +70,20 @@ def main() -> None:
         from maze_package import (
             dict_validate, ConfigError, create_maze,
             drawing_a_maze, solve_maze, output_file,
+            Colors
         )
 
-        # الالوان
-        colors = [
-            '\033[92m',  # اخضر
-            '\033[94m',  # ازرق
-            '\033[93m',  # اصفر
-            '\033[95m',  # زهري
-        ]
+        
         my_dict: dict[str, str] = file_processor(argv[1])
-
+        colorsi = Colors()
+        discoloration = colorsi.discoloration()
+        next_color = next(discoloration)
         maze_config = dict_validate(my_dict)
-        change_colors = 0  # Absher Hai changed the name
         maze, pattern_42 = create_maze(maze_config)
         solution_path = solve_maze(maze, maze_config)
         show_path = False
         drawing_a_maze(
-                maze, maze_config, pattern_42, colors[change_colors],
+                maze, maze_config, pattern_42, next_color,
                 show_path, solution_path
                 )
         output_file(maze_config, maze)
@@ -101,26 +99,22 @@ def main() -> None:
                 my_dict = file_processor(argv[1])
                 maze_config = dict_validate(my_dict)
                 maze, pattern_42 = create_maze(maze_config)
-                print(pattern_42)
                 solution_path = solve_maze(maze, maze_config)
                 show_path = False
                 drawing_a_maze(maze, maze_config,
-                               pattern_42, colors[change_colors])
+                               pattern_42, next_color)
                 output_file(maze_config, maze)
             elif input_variable == 2:
                 show_path = not show_path
                 drawing_a_maze(
-                        maze, maze_config, pattern_42, colors[change_colors],
+                        maze, maze_config, pattern_42, next_color,
                         show_path, solution_path
                         )
             elif input_variable == 3:
-                if change_colors >= len(colors) - 1:
-                    change_colors = 0
-                else:
-                    change_colors += 1
+                next_color = next(discoloration)
                 path_to_draw = solution_path if show_path else None
                 drawing_a_maze(
-                    maze, maze_config, pattern_42, colors[change_colors],
+                    maze, maze_config, pattern_42, next_color,
                     show_path, path_to_draw
                 )
             elif input_variable == 4:
