@@ -2,20 +2,12 @@
 # 42 Curriculum Project
 # Made by: mabu-are, aabtah
 
-
-ifeq ($(OS),Windows_NT)
-    DETECTED_OS := Windows
-    PYTHON := py
-    POETRY := py -m poetry
-	PIP = pip install
-    VENV_ACT := .venv\Scripts\python.exe
-else
-    DETECTED_OS := Linux
-    PYTHON := python3
-    POETRY := python3 -m poetry
-	PIP = pip install
-    VENV_ACT := .venv/bin/python
-endif
+PYTHON := python3
+PIP := $(PYTHON) -m pip
+POETRY := $(PYTHON) -m poetry
+VENV := .venv
+VENV_PYTHON := $(VENV)/bin/python
+VENV_PIP := $(VENV)/bin/pip
 
 # Main script
 SCRIPT := a_maze_ing.py
@@ -24,17 +16,17 @@ CONFIG := config.txt
 # Default target
 .PHONY: all
 all: install
-	-$(PYTHON) -m mypy --strict .
-	-$(PYTHON) -m flake8 .
+
 # Install dependencies (auto-creates and activates venv if not exists)
 .PHONY: install
 install:
-	$(PIP) poetry
+	$(PIP) install poetry
 	$(POETRY) install
+
 # Run the main script (auto-uses venv if exists)
 .PHONY: run
 run:
-	$(PYTHON) $(SCRIPT) $(CONFIG)
+	@if [ -d "$(VENV)" ]; then 		$(VENV_PYTHON) $(SCRIPT) $(CONFIG); 	else 		$(PYTHON) $(SCRIPT) $(CONFIG); 	fi
 
 # Run in debug mode with pdb (auto-uses venv if exists)
 .PHONY: debug
@@ -58,13 +50,25 @@ clean:
 # Run linting with flake8 and mypy (auto-uses venv if exists, excludes .venv)
 .PHONY: lint
 lint:
-	@if [ -d "$(VENV)" ]; then 		$(VENV_PIP) install flake8 mypy; 		$(VENV_PYTHON) -m flake8 . --exclude=$(VENV); 		$(VENV_PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs --exclude=$(VENV); 	else 		flake8 . --exclude=$(VENV); 		mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs --exclude=$(VENV); 	fi
+	@if [ -d "$(VENV)" ]; then \
+		$(VENV_PIP) install flake8 mypy; \
+		$(VENV_PYTHON) -m flake8 . --exclude=$(VENV); \
+		$(VENV_PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs --exclude=$(VENV); \
+	else \
+		python3 -m flake8 . --exclude=$(VENV); \
+		python3 -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs --exclude=$(VENV); \
+	fi
 
 # Run strict linting (auto-uses venv if exists, excludes .venv)
 .PHONY: lint-strict
 lint-strict:
-	@if [ -d "$(VENV)" ]; then 		$(VENV_PYTHON) -m flake8 . --exclude=$(VENV); 		$(VENV_PYTHON) -m mypy . --strict --exclude=$(VENV); 	else 		flake8 . --exclude=$(VENV); 		mypy . --strict --exclude=$(VENV); 	fi
-
+	@if [ -d "$(VENV)" ]; then \
+		$(VENV_PYTHON) -m flake8 . --exclude=$(VENV); \
+		$(VENV_PYTHON) -m mypy --strict . --exclude=$(VENV); \
+	else \
+		python3 -m flake8 . --exclude=$(VENV); \
+		python3 -m mypy --strict . --exclude=$(VENV); \
+	fi
 # Run tests (auto-uses venv if exists)
 .PHONY: test
 test:

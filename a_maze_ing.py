@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 from sys import argv, stderr, exit
 from importlib.util import find_spec
-
-from maze_package.drawing_a_maze import Colors
-
+import os
 
 if find_spec("pydantic") is not None:
     ...
@@ -72,13 +70,16 @@ def main() -> None:
             drawing_a_maze, solve_maze, output_file,
             Colors
         )
-
-        
         my_dict: dict[str, str] = file_processor(argv[1])
         colorsi = Colors()
         discoloration = colorsi.discoloration()
         next_color = next(discoloration)
         maze_config = dict_validate(my_dict)
+        if (
+            maze_config.width * 4.1 >= os.get_terminal_size().columns
+                or maze_config.height > 200
+        ):
+            raise ValueError("The terminal size does not match the data.")
         maze, pattern_42 = create_maze(maze_config)
         solution_path = solve_maze(maze, maze_config)
         show_path = False
@@ -101,6 +102,13 @@ def main() -> None:
                 maze, pattern_42 = create_maze(maze_config)
                 solution_path = solve_maze(maze, maze_config)
                 show_path = False
+                if (
+                    maze_config.width * 4.1 >= os.get_terminal_size().columns
+                        or maze_config.height > 200
+                ):
+                    raise ValueError(
+                        "The terminal size does not match the data."
+                    )
                 drawing_a_maze(maze, maze_config,
                                pattern_42, next_color)
                 output_file(maze_config, maze)

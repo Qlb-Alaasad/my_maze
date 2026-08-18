@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 from .dict_validate import MazeConfig
 from .create_maze import Cell
 
@@ -15,10 +15,12 @@ class Colors:
         '\033[47m',
         '\033[100m',
         ]
-    def discoloration(self):
+
+    def discoloration(self) -> Any:
         while True:
             for color in self.colors:
                 yield color
+
 
 def drawing_a_maze(
     maze: list[list[Cell]],
@@ -33,7 +35,7 @@ def drawing_a_maze(
 
     Developed by aabtah.
     """
-    
+
     for _ in range(maze_config.width * 2 + 1):
         print(f"{color}  {Colors.original}", end="")
     print()
@@ -45,17 +47,25 @@ def drawing_a_maze(
                 print(f"{Colors.cyan}  {Colors.original}", end="")
             elif (j, i) == maze_config.exit:
                 print(f"{Colors.red}  {Colors.original}", end="")
-            elif show_path == True and solution_path and (j, i) in solution_path:
+            elif (
+                show_path
+                and solution_path
+                and (j, i) in solution_path
+            ):
                 print(f"{Colors.magenta}  {Colors.original}", end="")
             elif pattern_42[i][j]:
                 print(f"{Colors.purple}  {Colors.original}", end="")
 
             else:
-                print(f"  ", end="")
-                
+                print("  ", end="")
             if maze[i][j].east:
                 print(f"{color}  {Colors.original}", end="")
-            elif show_path == True and solution_path and (j, i) in solution_path and (j + 1, i) in solution_path:
+            elif (
+                show_path
+                and solution_path
+                and (j, i) in solution_path
+                and (j + 1, i) in solution_path
+            ):
                 print(f"{Colors.magenta}  {Colors.original}", end="")
             else:
                 print("  ", end="")
@@ -64,12 +74,14 @@ def drawing_a_maze(
         for j in range(maze_config.width):
             if maze[i][j].south:
                 print(f"{color}  {Colors.original}", end="")
-            elif show_path == True and solution_path and (j, i) in solution_path and (j, i + 1) in solution_path:
+            elif (
+                show_path
+                and solution_path
+                and (j, i) in solution_path
+                and (j, i + 1) in solution_path
+            ):
                 print(f"{Colors.magenta}  {Colors.original}", end="")
             else:
                 print("  ", end="")
             print(f"{color}  {Colors.original}", end="")
         print()
-            
-
-    
